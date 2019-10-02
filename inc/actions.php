@@ -1,0 +1,86 @@
+<?php
+require 'functions.php';
+
+
+if (does_exists($_GET['action'])) {
+	// mapping of functions vs action
+	$action_function_mapping = array('register' => 'register_user', 'login' => 'login_user','edit' => 'editContentPage','delete' => 'deleteArticle', 'search_btn' => 'search_button_clicked', 'pst_btn' => 'post_button_clicked','onlink_click' => 'click_function');
+	$action_function_mapping[$_GET['action']]();
+
+}
+// THIS FUNCTION IS CALLED WHEN REGISTER IS CALLED.
+
+function register_user() {
+	$typed_username = $_POST['rusername'];
+	$typed_email = $_POST['remail'];
+	$typed_password = $_POST['rpassword'];
+	$typed_confirm_password = $_POST['rconfirmPassword'];
+	if (does_exists($typed_username) || does_exists($typed_email) || does_exists($typed_password) || does_exists($typed_confirm_password)) {
+
+		if (register($typed_username, $typed_email, $typed_password, $typed_confirm_password)) {
+			header('location:home.php');
+		} else {
+			echo '<script type="text/javascript">';
+			echo 'alert("Password and Confirm Passwords are not matching...");';
+			echo 'window.location.href = "../register.html"';
+			echo '</script>';
+		}
+	}
+}
+
+//  IF THE USER LOGGED IN THIS FUNCTION IS CALLED 
+
+function login_user() {
+	$uemail = $_POST['lemail'];
+	$upassword = $_POST['lpassword'];
+
+	if (does_exists($uemail) && does_exists($upassword)) {
+
+		if (login($uemail, $upassword)) {
+			header('location:../home.php');
+		} else {
+			echo '<script type="text/javascript">';
+			echo 'alert("Email Address and Password are not matching");';
+			echo 'window.location.href = "../register.html"';
+			echo '</script>';
+		}
+	} else {
+		echo "Please fill all the fields";
+	}
+}
+
+// ON CLICK POST THIS FUNCTION IS CALLED. 
+
+function post_button_clicked() {
+	global $conn;
+	$post_title = mysqli_real_escape_string($conn, $_POST['title']);
+	$category = mysqli_real_escape_string($conn, $_POST['category']);
+	$post_textArea_content = mysqli_real_escape_string($conn, $_POST['editor']);
+	$user_id = $_SESSION['userid'];
+	$article_id = $_SESSION['article_id'];
+	if (does_exists($post_textArea_content)) {
+		postButtonfunction($post_title, $category, $post_textArea_content, $user_id, $article_id);
+		header('location:../usersPage.php');
+	} else {
+		echo "Please fill all the fields";
+	}
+}
+// function  click_funciton (){
+// $query = "SELECT a.ttile FROM article as a"
+// }
+// function deleteArticle(){
+// 	$id = $_GET['article_id'];
+// 	global $conn;
+// 	if(isset($id)){
+// 		$query = "DELETE article_id FROM contents WHERE article_id = '$id'";
+// 		mysqli_query($conn,$query);
+// 		echo "Article delete successfully";
+// 		header('location:home.php');
+// 	}else{
+// 		echo "Something is wrong ";
+// 		echo $id;
+// 	}
+	
+// }
+
+?>

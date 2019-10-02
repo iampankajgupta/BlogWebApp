@@ -1,0 +1,46 @@
+h3{
+	font-size: 40px;
+	padding: 20px;
+	background-color: #FFBB00;
+}
+
+#pst_btn{
+	margin: 10px;
+}
+
+#editor{
+	margin: 10px;
+}
+.ql-toolbar{
+	margin: 10px;
+}
+.form-group{
+margin: 7px;
+}
+textarea{
+	margin: 10px;
+	width: 700px;
+	height: 200px;
+}
+#title{
+	font-size: 20px;
+}
+.jumbotron{
+	padding: 2rem;
+	background-color: #FFBB00;
+}
+.ql-editor{
+	height: 300px;
+	box-shadow: 0px 0px 1px orange;
+	
+}
+#pst_btn{
+margin: 30px;
+}
+#mytextarea{
+	margin-left: 30px;
+	margin-right:30px;
+}
+.tox .tox-notification--in {
+    visibility: hidden;
+}

@@ -1,0 +1,17 @@
+.jumbotron{
+	padding: 2rem;
+}
+
+a{
+	text-align: center;
+}
+.h2{
+	text-align: center;
+}
+.search{
+	position: absolute;
+	padding: 12px 20px;
+}
+.side{
+position: fixed;
+}
