@@ -15,3 +15,8 @@ a{
 .side{
 position: fixed;
 }
+section{
+	position: relative;
+
+	float:right;
+}

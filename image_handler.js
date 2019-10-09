@@ -3,7 +3,16 @@
         height:600,
         plugins: 'code image',
         toolbar:'undo redo | image code',
-         forced_root_block : 'div',
+        formats: {
+            // Changes the default format for h1 to have a class of heading
+            h1: { block: 'h1', classes: 'heading' }
+          },
+          style_formats: [
+            // Adds the h1 format defined above to style_formats
+            { title: 'My heading', format: 'h1' }
+          ],
+        
+        forced_root_block : 'div',
         image_upload_url:'upload.php',
         images_upload_handler:function(blobInfo,success,failure){
             var xhr, formData;

@@ -1,12 +1,12 @@
 <?php
 session_start();
 require 'db_config.php';
-if(isset($_POST['comment_btn'])){
-    $comment = $_POST['comment'];
-    $user_id = $_SESSION['userid'];
-    $article_id = $_GET['article_id'];
-    $comment_query = "INSERT INTO comments(user_id,article_id,comment)VALUES('$user_id','$article_id','$comment')";
-    mysqli_query($conn,$comment_query);
+if (isset($_POST['comment_btn'])) {
+	$comment = $_POST['comment'];
+	$user_id = $_SESSION['userid'];
+	$article_id = $_GET['article_id'];
+	$comment_query = "INSERT INTO comments(user_id,article_id,comment)VALUES('$user_id','$article_id','$comment')";
+	mysqli_query($conn, $comment_query);
 }
 ?>
 
@@ -33,7 +33,7 @@ $articleId = $_GET['article_id'];
 $query = "SELECT title FROM contentS WHERE article_id = '$articleId'";
 $result = mysqli_query($conn, $query);
 while ($row = mysqli_fetch_array($result)) {
-    echo "<h2 class = 'text-capitalize'>" . $row['title'] . "</h2>";
+	echo "<h2 class = 'text-capitalize'>" . $row['title'] . "</h2>";
 }
 
 ?>
@@ -55,7 +55,7 @@ $articleId = $_GET['article_id'];
 $query = "SELECT * FROM contents WHERE article_id = '$articleId'";
 $query = mysqli_query($conn, "SELECT * FROM contents WHERE article_id = $articleId");
 while ($row = mysqli_fetch_assoc($query)) {
-    echo "<div class ='ml-3 mb-5 mr-1'>" . $row['article'] . "</div>";
+	echo "<div class ='ml-3 mb-5 mr-1'>" . $row['article'] . "</div>";
 }
 
 ?>
@@ -79,18 +79,21 @@ while ($row = mysqli_fetch_assoc($query)) {
 require 'db_config.php';
 $user_id = $_SESSION['userid'];
 $article_id = $_GET['article_id'];
-if(isset($_POST['submit'])){
-    $comment_content = $_POST['comment_content'];
-    $insert_comment_query = "INSERT INTO comments(user_id,article_id,comment)VALUES('$user_id','$article_id','$comment_content')";
-    mysqli_query($conn,$insert_comment_query);
+if (isset($_POST['submit'])) {
+	$comment_content = $_POST['comment_content'];
+	$insert_comment_query = "INSERT INTO comments(user_id,article_id,comment)VALUES('$user_id','$article_id','$comment_content')";
+	mysqli_query($conn, $insert_comment_query);
 }
 $comment_query = "SELECT users.username,comments.comment,comments.created_at FROM users JOIN comments on users.Id = comments.user_id where comments.article_id = '$article_id'";
-$result = mysqli_query($conn,$comment_query);
-while($row = mysqli_fetch_array($result)){
+$result = mysqli_query($conn, $comment_query);
+while ($row = mysqli_fetch_array($result)) {
 
-    echo "<div class='border border-warning mt-2 ml-2 text-capitalize '><h6 class='ml-3 mt-3'>".$row['username']."<hr>".
-    $row['comment']."<br>".$row['created_at'].
-    "</h6></div>";
+	echo "<div class='border border-warning mt-2 ml-2 text-capitalize '><h6 class='ml-3 mt-3 mr-3'>" .
+	 "By ".
+	  $row['username'] . "<hr>" .
+	  $row['comment'] . "<br>" .
+	  $row['created_at'] .
+	"</h6></div>";
 }
 ?>
 

@@ -1,13 +1,13 @@
 <?php
 session_start();
-require 'inc/functions.php';
+require 'db_config.php';
 
 $typed_username = $_POST['rusername'];
 $typed_email = $_POST['remail'];
 $typed_password = $_POST['rpassword'];
 $typed_confirm_password = $_POST['rconfirmPassword'];
 
-if (does_exists($typed_username) || does_exists($typed_email) || does_exists($typed_password)) {
+if (empty($typed_username) || empty($typed_email) || empty($typed_password)) {
 	if ($typed_password == $typed_confirm_password) {
 
 		$query = "SELECT * FROM users WHERE email = '$typed_email'";
@@ -19,7 +19,8 @@ if (does_exists($typed_username) || does_exists($typed_email) || does_exists($ty
 			echo 'window.location.href = "register.html"';
 			echo '</script>';
 		} else {
-			$reg = "INSERT INTO users(username,email,password) VALUES('$typed_username','$typed_email','$typed_password')";
+			$hash_password = hash('sha512',$typed_password);
+			$reg = "INSERT INTO users(username,email,password) VALUES('$typed_username','$typed_email','$hash_password')";
 			mysqli_query($conn, $reg);
 			header('location:home.php');
 		}
@@ -30,5 +31,3 @@ if (does_exists($typed_username) || does_exists($typed_email) || does_exists($ty
 		echo '</script>';
 	}
 }
-
-?>
