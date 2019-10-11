@@ -16,7 +16,7 @@ session_start();
 	<div class=".container ">
 		<div class="jumbotron text-center bg-warning">
 			<h2 class="font-weight-bold">My Articles</h2>
-			<a href="index.html" class="float-left font-weight-bold">Create New Article</a>
+			<a href="index.php" class="float-left font-weight-bold">Create New Article</a>
 			<a href="home.php" class="float-right mr-2 font-weight-bold">Go To Home</a>
 		</div>
 		<form action="#" method="POST">
@@ -29,12 +29,13 @@ session_start();
 	</div>
 	<?php
 	include_once 'db_config.php';
-	// function on_Page_Load();
-	// function on_Search_Button_Click();
+
+
 	if (isset($_POST['search_submit'])) {
+		$user_id = $_SESSION['userid'];
 		$search = mysqli_real_escape_string($conn, $_POST['text_box']);
 		if (!empty($search)) {
-			$query = "SELECT * FROM contents WHERE title LIKE '%$search%'";
+			$query = "SELECT * FROM contents WHERE user_id = '$user_id' AND title LIKE '%$search%'";
 			$result = mysqli_query($conn, $query);
 			$queryResult = mysqli_num_rows($result);
 			if ($queryResult > 0) {
@@ -73,7 +74,7 @@ session_start();
 			</ul>";
 			}
 		} else {
-			echo "<h3><a href ='index.html' class ='ml-3 mt-2'>START CREATING YOUR ARTICLE</a></h3>";
+			echo "<h3><a href ='index.php' class ='ml-3 mt-2'>START CREATING YOUR ARTICLE</a></h3>";
 		}
 	}
 	?>

@@ -1,0 +1,66 @@
+<?php 
+require 'db_config.php';
+$category_query = "SELECT * FROM categories";
+$category_result = mysqli_query($conn, $category_query);
+$cat='';
+while ($cat_row = mysqli_fetch_array($category_result)) {
+    $cat.='<option value="'.$cat_row["category_id"].'">'.$cat_row["category"].'</option>';
+}
+?>
+ <!DOCTYPE html>
+ <html>
+
+ <head>
+     <title>Create Blog </title>
+     <meta charset="utf-8">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+     <script src="image_handler.js"></script>
+     <link rel="stylesheet" type="text/css" href="index_stylesheet.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+ </head>
+
+ <body>
+     <div class=".container">
+         <div class="jumbotron text-center ">
+             <h1>Create Page</h1>
+             <a href="home.php" class="float-right font-weight-bold">Go To Home</a>
+         </div>
+         <form action="inc/actions.php?action=pst_btn" method="POST">
+             <div class="form-group ">
+                 <label id="title" for="title">Title:</label>
+                 <input type="text" class="form-control" name="title" placeholder="Title..." required="">
+             </div>
+             <div class="form-group">
+                 <label id="category" for="title">Category:</label>
+                <select class="js-example-basic-multiple form-control" name="categories[]" id="categories" multiple="multiple">
+                    <?php echo $cat;?>
+                </select>
+             </div>
+             <textarea name="editor" id="mytextarea"></textarea></textarea>
+             <button class="btn btn-warning pl-4 pr-4 " id="pst_btn" type="submit" name="post">POST</button>
+         </form>
+     </div>
+
+     <!-- <textarea  name = "Comments"placeholder="Comments...."></textarea> -->
+
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+      </script>
+     <link href="styles/select2.min.css" rel="stylesheet" />
+     <script src="scripts/select2.min.js"></script>
+      <script>
+            $(document).ready(function() {
+                $('.js-example-basic-multiple').select2();
+            });
+        </script>
+        
+
+
+ </body>
+
+ </html>

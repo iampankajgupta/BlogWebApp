@@ -20,7 +20,8 @@ function register_user()
 	$typed_confirm_password = mysqli_real_escape_string($conn, $_POST['rconfirmPassword']);
 	if (does_exists($typed_username) || does_exists($typed_email) || does_exists($typed_password) || does_exists($typed_confirm_password)) {
 
-		register($typed_username, $typed_email, $typed_password, $typed_confirm_password);
+		$user_id = register($typed_username, $typed_email, $typed_password, $typed_confirm_password);
+		$_SESSION['userid'] = $user_id;
 		header('location:../home.php');
 	}
 }
@@ -53,16 +54,35 @@ function login_user()
 function post_button_clicked()
 {
 	global $conn;
+
+	// insert post in db
 	$post_title = mysqli_real_escape_string($conn, $_POST['title']);
-	$category = mysqli_real_escape_string($conn, $_POST['category']);
 	$post_textArea_content = mysqli_real_escape_string($conn, $_POST['editor']);
 	$user_id = $_SESSION['userid'];
+
+
+	
 	if (does_exists($post_textArea_content)) {
-		postButtonfunction($post_title, $category, $post_textArea_content, $user_id);
+		$postId = postButtonfunction($post_title, $post_textArea_content, $user_id);
+		// if post inserted successfully, put the mapping of category and article in the mapping table
+		
+		$query = 'INSERT INTO  category_article (category_id, article_id) values ';
+		foreach ($_POST['categories'] as $index=>$category) {
+			if ($index != 0) {
+				$query .= ',';
+			}
+			$query .= "($category, $postId)";
+		}
+		mysqli_query($conn, $query);
 		header('location:../usersPage.php');
 	} else {
 		echo "Please fill all the fields";
 	}
+
+		
+	// foreach ($_POST['categories'] as $category)
+	// echo $category."\n";
+	// 	header('location:../usersPage.php');
 }
 
 

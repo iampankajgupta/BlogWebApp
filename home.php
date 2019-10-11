@@ -85,10 +85,11 @@ require 'db_config.php';
           echo 'window.location.href = "home.php"';
           echo '</script>';
         }
-      } else if (isset($_GET['category_id'])) {
+      } 
+      else if (isset($_GET['category_id'])) {
 
         $var = $_GET['category_id'];
-        $catQuery = "SELECT distinct contents.article_id,contents.title FROM contents inner join category_article on contents.article_id = category_article.article_id JOIN categories ON category_article.category_id = '$var'";
+        $catQuery = "SELECT DISTINCT contents.article_id,contents.title FROM contents inner join category_article on contents.article_id = category_article.article_id JOIN categories ON category_article.category_id = '$var'";
         $catResult = mysqli_query($conn, $catQuery);
         $catAnotherResult = mysqli_num_rows($catResult);
         if ($catAnotherResult > 0) {
@@ -107,7 +108,8 @@ require 'db_config.php';
 
           echo "<h4> No title belong to this category </h4>";
         }
-      } else {
+      } 
+      else{
 
         // PRINT ALL THE ARTICLE TITLES ON THE HOME PAGE
 

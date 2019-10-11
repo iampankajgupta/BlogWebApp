@@ -8,7 +8,33 @@ while ($row = mysqli_fetch_array($result)) {
     $title = $row['title'];
     $article = $row['article'];
 }
+
+$category_query = "SELECT * FROM categories";
+$category_result = mysqli_query($conn, $category_query);
+
+// $get_category = "SELECT DISTINCT categories.category FROM categories JOIN category_article ON categories.category_id=category_article.category_id WHERE category_article.article_id='$article_id'";
+$get_category = "select category_id from category_article where article_id=$article_id";
+$get_cat_result = mysqli_query($conn, $get_category);
+
+//  APPENDING ALL SELECTED CATEGORIES INTO AN ARRAY
+$article_categories = [];
+while ($get_category_row = mysqli_fetch_array($get_cat_result)) {
+    array_push($article_categories, $get_category_row['category_id']);
+}
+
+// DISPLAYING SELECTED AS WELL AS NON SELECTED CATEGORY IN CATEGORY
+
+$cat = '';
+while ($cat_row = mysqli_fetch_array($category_result)) {
+    $cat .= '<option ';
+    if (in_array($cat_row["category_id"], $article_categories)) {
+        $cat .= 'selected = "selected"';
+    }
+    $cat .= ' value="' . $cat_row["category_id"] . '">' . $cat_row["category"] . '</option>';
+}
+
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -39,18 +65,13 @@ while ($row = mysqli_fetch_array($result)) {
             </div>
             <div class="form-group">
                 <label id="category" for="title">Category:</label>
-                <select class="js-example-basic-multiple form-control" name="states[]" multiple="multiple">
-                    <option value="nature" id="1">Nature</option>
-                    <option value="music" id="2">Music</option>
-                    <option value="tv_shows" id="3">Tv shows</option>
-                    <option value="web_developement" id="4">Web Developement</option>
-                    <option value="android" id="5">Android</option>
-                    <option value="movies" id="6">Movies</option>
+                <select class="js-example-basic-multiple form-control " name="states[]" multiple="multiple">
+                    <?php echo $cat;?>
                 </select>
             </div>
 
             <textarea name="updateEditor_text" id="mytextarea"><?php echo $article ?></textarea>
-            <button class="btn btn-warning pl-4 pr-4" id="pst_btn" type="submit" name="post">Upadate</button>
+            <button class="btn btn-warning pl-4 pr-4" id="pst_btn" type="submit" name="post">Update</button>
         </form>
     </div>
 
@@ -64,6 +85,10 @@ while ($row = mysqli_fetch_array($result)) {
     <script>
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2();
+            $(".js-example-tags").select2({
+                tags: true
+            });
+
         });
     </script>
 </body>
