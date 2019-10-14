@@ -13,10 +13,11 @@ $category_query = "SELECT * FROM categories";
 $category_result = mysqli_query($conn, $category_query);
 
 // $get_category = "SELECT DISTINCT categories.category FROM categories JOIN category_article ON categories.category_id=category_article.category_id WHERE category_article.article_id='$article_id'";
-$get_category = "select category_id from category_article where article_id=$article_id";
+$get_category = "SELECT category_id from category_article where article_id=$article_id";
 $get_cat_result = mysqli_query($conn, $get_category);
 
 //  APPENDING ALL SELECTED CATEGORIES INTO AN ARRAY
+
 $article_categories = [];
 while ($get_category_row = mysqli_fetch_array($get_cat_result)) {
     array_push($article_categories, $get_category_row['category_id']);
@@ -31,13 +32,13 @@ while ($cat_row = mysqli_fetch_array($category_result)) {
         $cat .= 'selected = "selected"';
     }
     $cat .= ' value="' . $cat_row["category_id"] . '">' . $cat_row["category"] . '</option>';
+
 }
 
 ?>
 
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Create Blog </title>
     <meta charset="utf-8">
@@ -50,6 +51,7 @@ while ($cat_row = mysqli_fetch_array($category_result)) {
     <script src="image_handler.js"></script>
     <link rel="stylesheet" type="text/css" href="index_stylesheet.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
 </head>
 
 <body>
@@ -58,15 +60,15 @@ while ($cat_row = mysqli_fetch_array($category_result)) {
             <h1>Edit Page</h1>
             <a href="home.php" class="float-right font-weight-bold">Go To Home</a>
         </div>
-        <form action="inc/actions.php?action=update" method="POST">
+        <form action="inc/actions.php?action=update&article_id=<?php echo $_GET['article_id'];?>" method="POST">
             <div class="form-group ">
                 <label id="title" for="title">Title:</label>
                 <input type="text" class="form-control" name="updateTitle" placeholder="Title..." required="" value="<?php echo $title ?>">
             </div>
             <div class="form-group">
                 <label id="category" for="title">Category:</label>
-                <select class="js-example-basic-multiple form-control " name="states[]" multiple="multiple">
-                    <?php echo $cat;?>
+                <select class="js-example-basic-multiple form-control " name="categories[]" multiple="multiple">
+                    <?php echo $cat; ?>
                 </select>
             </div>
 
@@ -75,7 +77,6 @@ while ($cat_row = mysqli_fetch_array($category_result)) {
         </form>
     </div>
 
-    <!-- <textarea  name = "Comments"placeholder="Comments...."></textarea> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

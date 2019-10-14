@@ -1,12 +1,12 @@
 <?php
 session_start();
+require 'db_config.php';
+$user_id = $_SESSION['userid'];
 
 if (!@$_SESSION['userid']) {
   $_SESSION['userid'] = null;
   header('location:register.html');
 }
-
-require 'db_config.php';
 
 ?>
 <!DOCTYPE html>
@@ -81,12 +81,11 @@ require 'db_config.php';
           }
         } else {
           echo '<script type="text/javascript">';
-          echo 'alert("Please fill the textbox then press search button");';
+          echo 'alert("Please fill the searchBox then press search button");';
           echo 'window.location.href = "home.php"';
           echo '</script>';
         }
-      } 
-      else if (isset($_GET['category_id'])) {
+      } else if (isset($_GET['category_id'])) {
 
         $var = $_GET['category_id'];
         $catQuery = "SELECT DISTINCT contents.article_id,contents.title FROM contents inner join category_article on contents.article_id = category_article.article_id JOIN categories ON category_article.category_id = '$var'";
@@ -108,8 +107,7 @@ require 'db_config.php';
 
           echo "<h4> No title belong to this category </h4>";
         }
-      } 
-      else{
+      } else {
 
         // PRINT ALL THE ARTICLE TITLES ON THE HOME PAGE
 

@@ -5,7 +5,7 @@ if (does_exists($_GET['action'])) {
 
 	// mapping of functions vs action
 
-	$action_function_mapping = array('register' => 'register_user', 'login' => 'login_user', 'edit' => 'editContentPage', 'delete' => 'deleteArticle', 'search_btn' => 'search_button_clicked', 'update' => 'updateFunction', 'pst_btn' => 'post_button_clicked', 'comment' => 'commentClicked');
+	$action_function_mapping = array('register' => 'register_user', 'login' => 'login_user','delete' => 'deleteArticle', 'search_btn' => 'search_button_clicked', 'update' => 'updateFunction', 'pst_btn' => 'post_button_clicked', 'comment' => 'commentClicked');
 	$action_function_mapping[$_GET['action']]();
 }
 
@@ -32,7 +32,7 @@ function login_user()
 {
 	$uemail = $_POST['lemail'];
 	$upassword = $_POST['lpassword'];
-	
+
 
 	if (does_exists($uemail) && does_exists($upassword)) {
 
@@ -61,13 +61,13 @@ function post_button_clicked()
 	$user_id = $_SESSION['userid'];
 
 
-	
+
 	if (does_exists($post_textArea_content)) {
 		$postId = postButtonfunction($post_title, $post_textArea_content, $user_id);
 		// if post inserted successfully, put the mapping of category and article in the mapping table
-		
-		$query = 'INSERT INTO  category_article (category_id, article_id) values ';
-		foreach ($_POST['categories'] as $index=>$category) {
+
+		$query = 'INSERT INTO category_article (category_id, article_id) values ';
+		foreach ($_POST['categories'] as $index => $category) {
 			if ($index != 0) {
 				$query .= ',';
 			}
@@ -79,10 +79,6 @@ function post_button_clicked()
 		echo "Please fill all the fields";
 	}
 
-		
-	// foreach ($_POST['categories'] as $category)
-	// echo $category."\n";
-	// 	header('location:../usersPage.php');
 }
 
 
@@ -94,7 +90,7 @@ function deleteArticle()
 
 	// CHECK IF THE USER IS NOT DELETING OTHERS ARTICLE 
 
-	$delete_query = "SELECT article_id='$article_id' FROM contents WHERE user_id = '$user_id'";
+	$delete_query = "SELECT article_id FROM contents WHERE user_id='$user_id' AND article_id='$article_id'";
 	$result = mysqli_query($conn, $delete_query);
 	if (mysqli_num_rows($result) == 1) {
 		deleteFunction($article_id);
@@ -113,19 +109,23 @@ function updateFunction()
 	$user_id = $_SESSION['userid'];
 	$article_id = $_GET['article_id'];
 	$edit_title = $_POST['updateTitle'];
-	$edit_text_area_content = mysqli_real_escape_string($conn, $_POST['updateEditor_text']);
+	$edit_text_area_content = $_POST['updateEditor_text'];
 
 	// CHECK IF THE USER IS NOT EDITING OTHERS ARTICLE 
 
-	$edit_query = "SELECT article_id = '$article_id'FROM contents WHERE user_id = '$user_id'";
+	$edit_query = " SELECT article_id FROM contents WHERE user_id='$user_id' AND article_id='$article_id' ";
 	$edit_result = mysqli_query($conn, $edit_query);
+
 	if (mysqli_num_rows($edit_result) == 1) {
+
 		click_update_function($article_id, $edit_title, $edit_text_area_content);
 		header('location:../usersPage.php');
-	} else {
+
+	}else{
 		echo '<script type="text/javascript">';
-		echo 'alert(" YOU HAVE NO RIGHTS TO EDIT OTHERS ARTICLE ");';
+		echo 'alert("YOU HAVE NO RIGHTS TO DELETE OTHERS ARTICLE");';
 		echo 'window.location.href = "../home.php"';
 		echo '</script>';
+
 	}
 }

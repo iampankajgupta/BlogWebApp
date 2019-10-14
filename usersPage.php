@@ -54,7 +54,7 @@ session_start();
 			}
 		} else {
 			echo '<script type="text/javascript">';
-			echo 'alert("Please fill the textbox then press search button");';
+			echo 'alert("Please fill the searchBox then press search button");';
 			echo 'window.location.href = "usersPage.php"';
 			echo '</script>';
 		}

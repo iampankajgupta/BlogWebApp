@@ -81,7 +81,6 @@ function searchBarLogic($search)
 			</h4>
 			</li>
 			</ul>";
-
 		}
 	}
 }
@@ -96,24 +95,36 @@ function postButtonfunction($title, $post_textArea_content, $user_id)
 	mysqli_query($conn, $query);
 
 	return mysqli_insert_id($conn);
-	
 }
 
 
 function deleteFunction($article_id)
 {
 	global $conn;
-	// $delete_query = "DELETE FROM contents WHERE article_id = '$article_id'";
-	$delete1_query = "DELETE FROM contents JOIN category_article WHERE article_id = '$article_id'";
-	mysqli_query($conn, $delete1_query);
+
+	$delete_query = "DELETE FROM contents WHERE article_id = '$article_id'";
+	mysqli_query($conn, $delete_query);
+	$delete_cat_query = "DELETE FROM category_article WHERE article_id='$article_id'";
+	mysqli_query($conn, $delete_cat_query);
 }
 
 
 function click_update_function($article_id, $title, $text_area_content)
 {
-
 	global $conn;
-	$update_query = " UPDATE contents SET title =$title, article= $text_area_content WHERE article_id=$article_id";
-	$update_category = "UPDATE category_article SET category_id = ";
-	mysqli_query($conn,$update_query);
+	$update_query = " UPDATE contents SET title = '$title', article= '$text_area_content' WHERE article_id='$article_id'";
+	mysqli_query($conn, $update_query);
+
+	$cat_query = "DELETE FROM category_article WHERE article_id = '$article_id'";
+	mysqli_query($conn,$cat_query);
+
+	$query = 'INSERT INTO category_article (category_id, article_id) values ';
+		foreach ($_POST['categories'] as $index => $category) {
+			if ($index != 0) {
+				$query .= ',';
+			}
+			$query .= "($category, $article_id)";
+		}
+		mysqli_query($conn, $query);
+
 }
