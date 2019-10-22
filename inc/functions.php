@@ -1,5 +1,6 @@
 <?php
-require '../db_config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/demo/db_config.php';
+// require '../db_config.php';
 session_start();
 
 
@@ -128,3 +129,5 @@ function click_update_function($article_id, $title, $text_area_content)
 		mysqli_query($conn, $query);
 
 }
+
+
